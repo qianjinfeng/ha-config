@@ -1,0 +1,9 @@
+input_boolean:
+  disable_turn_off_tv_away:
+    name: Disable Turn Off Living Room TV If Away
+    initial: off
+    
+input_text:
+  text1:
+    name: Text 1
+    initial: Some Text

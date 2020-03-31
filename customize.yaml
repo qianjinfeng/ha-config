@@ -1,0 +1,26 @@
+light.diningroom_ceiling:
+  friendly_name: 餐厅灯
+light.diningroom_spotlight:
+  friendly_name: 餐厅射灯
+light.kitchen_ceiling:
+  friendly_name: 厨房灯
+light.sittingroom_ceiling:
+  friendly_name: 客厅灯
+light.sittingroom_lightstrip:
+  friendly_name: 客厅灯带
+light.sittingroom_spotlight:
+  friendly_name: 客厅射灯
+light.porch_spotlight:
+  friendly_name: 门廊灯
+light.small_bedroom_ceiling:
+  friendly_name: 客房灯
+light.bedroom_ceiling:
+  friendly_name: 卧室灯
+light.bedroom_bedlamp:
+  friendly_name: 卧室落地灯
+  icon: mdi:lamp
+light.studyroom_ceiling:
+  friendly_name: 书房灯
+light.studyroom_desklamp:
+  friendly_name: 书房台灯
+  icon: mdi:lamp

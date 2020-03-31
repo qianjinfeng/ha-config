@@ -1,0 +1,83 @@
+binary_sensor:
+  - platform: hikvision
+    host: 192.168.2.93
+    ssl: false
+    name: Patio
+    username: !secret hikvision_username
+    password: !secret hikvision_password
+  - platform: ffmpeg_motion
+    name: ezvizc6c
+    input: !secret camera_ezviz_rtsp
+
+camera:
+  - platform: ffmpeg
+    name: ezvizc6c
+    input: !secret camera_ezviz_rtsp
+    extra_arguments: '-vf scale=800:450'
+
+image_processing:
+  # - platform: tensorflow
+  #   scan_interval: 10000
+  #   source:
+  #     - entity_id: camera.ezvizc6c
+  #   file_out:
+  #     - "/share/images/{{ camera_entity.split('.')[1] }}_latest.jpg"
+  #     - "/share/images/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
+  #   model:
+  #     graph: /config/tensorflow/frozen_inference_graph.pb
+  #     categories:
+  #       - category: person
+  #         area:
+  #           # Exclude right 6% of image
+  #           right: 0.94
+  - platform: dlib_face_identify
+    source:
+      - entity_id: camera.ezvizc6c
+    faces:
+      Jon: /home/hass/jon.jpg
+      Bob: /home/hass/bob.jpg
+###############################################################################
+#                               Automations
+###############################################################################
+automation:
+  # Example advanced automations.yaml entry
+  - alias: TensorFlow scanning
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.ezvizc6c
+    action:
+      - service: image_processing.scan
+        entity_id: camera.ezvizc6c
+  - id: log_opencv
+    alias: 'OpenCV detection'
+    initial_state: 'off'
+    trigger:
+      - platform: state
+        entity_id:
+          - image_processing.opencv_backyard
+          - image_processing.opencv_patio
+          - image_processing.opencv_driveway
+          - image_processing.opencv_porch
+    condition:
+      - condition: template
+        value_template: >
+          {{ trigger.to_state.attributes.total_matches > 0 }}
+    action:
+      - service: logbook.log
+        data_template:
+          name: "OpenCV activity: "
+          message: >-
+            {{ dict(trigger.to_state.attributes)|tojson }}
+      - service: notify.telegram
+        data_template:
+          title: "OpenCV: "
+          message: >-
+            {{ dict(trigger.to_state.attributes)|tojson }}
+          data:
+            photo:
+              - url: >-
+                  {% set camera = trigger.to_state.attributes.camera.split('.')[1] %}
+                  {{ states.sensor.secrets.attributes.base_url ~ states.camera[camera].attributes.entity_picture }}
+                caption: >-
+                  {{ trigger.to_state.attributes.matches.Face }}

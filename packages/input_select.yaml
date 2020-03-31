@@ -1,0 +1,23 @@
+
+# hass_theme:
+#    name: HASS Themes
+#    options:
+#      - default
+#      - solarized
+#      - PmxMonolight
+#      - PmxMononight
+#      - wood
+#    initial: default
+#    icon: mdi:theme-light-dark
+# chromecast_radio:
+#     name: 'Select Speakers:'
+#     options:
+#       - Bathroom
+#       - Bedroom
+#       - Kitchen
+#       - Livingroom
+#       - Office
+#       - Shop
+#       - Everywhere
+#     initial: Everywhere
+#     icon: mdi:speaker-wireless

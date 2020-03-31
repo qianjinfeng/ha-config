@@ -1,0 +1,10 @@
+device_tracker:
+  - platform: xiaomi
+    # 小米路由器的IP地址
+    host: !secret xiaomi_router_ip
+    # 小米路由器的admin密码
+    password: !secret xiaomi_router_password
+    # 涵义见下文解释
+    interval_seconds: 10
+    consider_home: 180
+    track_new_devices: no

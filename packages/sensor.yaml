@@ -1,0 +1,5 @@
+sensor:
+  # Resolve IP address of home-assistant.io via Google DNS
+  - platform: dnsip
+    hostname: !secret ali_dns_domain
+    name: my aliyun DNS

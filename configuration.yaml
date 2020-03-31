@@ -1,0 +1,163 @@
+homeassistant:
+  # 名字按照自己的来吧
+  name: !secret name
+  # 位置
+  unit_system: metric
+  time_zone: !secret time_zone
+  packages: !include_dir_named packages
+  # whitelist_external_dirs:
+  #   - !secret motion_dir
+  #   - !secret recording_dir
+  # Customization file
+  customize: !include customize.yaml
+  auth_providers:
+      - type: homeassistant
+      - type: legacy_api_password
+        api_password: !secret http_password
+      - type: trusted_networks
+        trusted_networks:
+          - 192.168.31.0/24
+# Configure a default setup of Home Assistant (frontend, api, etc)
+# Enables configuration UI
+#config:
+
+# Incorporate latest changes
+#default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# 默认系统地址，包括ssl证书相关，注意secret需要配置参数
+# https://www.home-assistant.io/components/http/
+http:
+  # base_url: !secret base_url
+  # ssl_certificate: /ssl/fullchain.pem
+  # ssl_key: /ssl/privkey.pem
+  # ip_ban_enabled: true
+  # login_attempts_threshold: 3
+
+
+# Person component
+person:
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+#updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  #include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Text to speech
+tts:
+  - platform: baidu
+    app_id: 18452589
+    api_key: !secret baidu_tts_api_key 
+    secret_key: !secret baidu_tts_secret_key
+
+# ########################################
+# ###                        ###
+# ########################################
+mqtt:
+  broker: 192.168.31.131
+  discovery: false
+  discovery_prefix: homeassistant
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/ffmpeg
+
+# ########################################
+# ###           INCLUDES               ###
+# ########################################
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+zone: !include zone.yaml
+
+# ########################################
+# ###             SERVICES             ###
+# ########################################
+# 打开日出日落，有一些插件依赖需要打开
+sun:
+alidns:
+    access_id: !secret ali_dns_access_id 
+    access_key: !secret ali_dns_access_key
+    domain: !secret ali_dns_domain 
+    sub_domain: www
+notify:
+  - name: outlook
+    platform: smtp
+    server: smtp-mail.outlook.com
+    port: 587
+    timeout: 15
+    sender: !secret notify_mail_account
+    encryption: starttls
+    username: !secret notify_mail_account 
+    password: !secret notify_mail_password 
+    recipient:
+      - !secret notify_mail_recipient
+    sender_name: Home Assistant
+
+# ########################################
+# ###                GUI               ###
+# ########################################
+# lovelace:
+#   mode: yaml
+# 前端配置
+#frontend:
+  #themes: !include_dir_named themes
+#   extra_html_url:
+#     - /local/hass-bha-icons.html
+panel_custom:
+  - name: floorplan
+    sidebar_title: Floorplan
+    sidebar_icon: mdi:home
+    url_path: floorplan
+    config: !include floorplan.yaml
+# curl https://api.ip.sb/geoip
+# 左侧显示的地图
+# map:
+# 左侧显示的历史
+history:
+# https://www.home-assistant.io/components/config/
+config:
+# 系统监视
+system_health:
+
+# ########################################
+# ###           ASSISTANTS             ###
+# ########################################
+#cloud: # !include assistants/cloud.yaml
+#homekit: # !include assistants/homekit.yaml
+
+# ########################################
+# ###             MOBILE               ###
+# ########################################
+# IOS设备通知 https://www.home-assistant.io/components/mobile_app/
+#ios: !include notify/ios_config.yaml
+# 移动设备绑定，显示电量等
+mobile_app:
+# Enable iOS frontend
+ios:
+
+# ########################################
+# ###             DATABASE             ###
+# ########################################
+recorder:
+  # 可选项，以下配置表示每2天进行一次数据库“事件表”和“状态表”的清理动作；缺省值为永不清理。
+  purge_interval: 1
+  # 当配置了purge_interval后配置，以下配置表示在清理数据库历史记录时保留最近5天的记录。
+  purge_keep_days: 7
+  #db_url: !secret mysql_uri mysql://hass:hass@core-mariadb/homeassistant?charset=utf8
+
+
+# ########################################
+# ###              LOGGING             ###
+# ########################################
+logger:
+  default: warning
+  logs:
+    homeassistant.components.mqtt: debug

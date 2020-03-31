@@ -1,0 +1,52 @@
+yeelight:
+  devices:
+      192.168.31.145:
+        name: small bedroom ceiling
+        model: color2
+
+light:
+  - platform: mqtt
+    name: diningroom ceiling
+    command_topic: "diningroom/ceiling/light/switch"
+  - platform: mqtt
+    name: diningroom spotlight
+    command_topic: "diningroom/spot/light/switch"
+  - platform: mqtt
+    name: bedroom ceiling
+    command_topic: "bedroom/ceiling/light/switch"
+  - platform: mqtt
+    name: bedroom bedlamp
+    command_topic: "bedroom/bedlamp/light/switch"
+  - platform: mqtt
+    name: kitchen ceiling
+    command_topic: "kitchen/ceiling/light/switch"
+  - platform: mqtt
+    name: porch spotlight
+    command_topic: "porch/spot/light/switch"
+  - platform: mqtt
+    name: sittingroom ceiling
+    command_topic: "sittingroom/ceiling/light/switch"
+  - platform: mqtt
+    name: sittingroom lightstrip
+    command_topic: "sittingroom/strip/light/switch"
+  - platform: mqtt
+    name: sittingroom spotlight
+    command_topic: "sittingroom/spot/light/switch"
+  - platform: mqtt
+    name: studyroom ceiling
+    command_topic: "studyroom/ceiling/light/switch"
+  - platform: mqtt
+    name: studyroom desklamp
+    command_topic: "studyroom/desklamp/light/switch"
+  # Groups
+  - platform: group
+    name: Bedroom Lights
+    entities:
+      - light.bedroom_ceiling
+      - light.bedroom_bedlamp
+  - platform: group
+    name: Sittingroom Lights
+    entities:
+      - light.sittingroom_ceiling
+      - light.sittingroom_lightstrip
+      - light.sittingroom_spotlight

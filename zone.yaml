@@ -1,0 +1,16 @@
+
+- name: School
+  latitude: !secret zone_school_lat
+  longitude: !secret zone_school_lon
+  radius: 100
+  icon: mdi:school
+
+- name: Office
+  latitude: !secret zone_office_lat
+  longitude: !secret zone_office_lon
+
+- name: Home
+  latitude: !secret zone_home_lat
+  longitude: !secret zone_home_lon
+  radius: 100
+  icon: mdi:account-multiple
